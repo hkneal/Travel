@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+  <head>
+    <meta charset="utf-8">
+    <title>Index Page</title>
+    {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'travel_app/css/main.css' %}" media="screen" title="Index Page"  charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Datepicker - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+  </head>
+  <body>
+    <h1>Welcome!</h1>
+    <h1 class="imprint">Register</h1>
+    <div class="regDiv">
+      <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        {{ register_form }}
+        {% for field in register_form %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <p><a href="#id_{{ field.name }}">{{ error|escape }}</a></p>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+        <input class="submit" type="submit" value="Register">
+      </form>
+    </div>
+    <h1 class="imprint">Log In</h1>
+    <div class="loginDiv">
+        <form action="{% url 'login' %}" method="post">
+          {% csrf_token %}
+          {{ login_form }}
+          {% for field in login_form %}
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <p><a href="#id_{{ field.name }}">{{ error|escape }}</a></p>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          <input class="submit" type="submit" value="Login">
+        </form>
+    </div>
+  </body>
+</html>

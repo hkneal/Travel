@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'travel_app/css/main.css' %}" media="screen" title="no title"  charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Datepicker - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+      $( "#datepicker" ).datepicker();
+    } );
+    </script>
+  </head>
+  <body>
+    <header>
+      <a href="{% url 'logout' %}">Logout</a>
+    </header>
+    <div class="tripSchedule">
+      <h1>Hello, {{ request.session.name }}!</h1>
+      <h4>Here are your appointments for today {{ today }}: </h4>
+      <table>
+        <tr>
+          <th>Tasks</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        {% for appt in appts %}
+          <tr>
+            <td>{{ appt.task }}</a></td>
+            <td>{{ appt.appt_time }}</td>
+            <td>{{ appt.status }}</td>
+            {% if appt.status == "Pending" or appt.status == "Missed"%}
+              <td><a class='action' href="{% url 'edit_appt' appt.id %}">Edit</a> <a class='action' href="{% url 'delete_appt' appt.id %}">Delete</a></td>
+            {% else %}
+              <td></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  <div class="otherSchedules">
+    <h3>Your Other Appointments</h3>
+    <table>
+      <tr>
+        <th>Tasks</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+      {% for appt in other_appts %}
+        <tr>
+          <td>{{ appt.task }}</td>
+          <td>{{ appt.appt_date }}</td>
+          <td>{{ appt.appt_time }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="addAppt">
+    <form class="" action="{% url 'add_appt' %}" method="post">
+      {% csrf_token %}
+      {{ add_appt_form }}
+      {% for field in add_appt_form %}
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <p><a href="#id_{{ field.name }}">{{ error|escape }}</a></p>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      <input class="submit" type="submit" value="Add">
+    </form>
+
+  </div>
+  </body>
+</html>

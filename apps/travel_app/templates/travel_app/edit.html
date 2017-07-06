@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Page</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'travel_app/css/main.css' %}" media="screen" title="Edit Page"  charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Datepicker - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+      $( "#datepicker" ).datepicker();
+    } );
+    </script>
+  </head>
+  <body>
+    <header>
+      <a id='router' href="{% url 'dashboard' %}">Dashboard</a>
+      <a id='router2' href="{% url 'logout' %}">Logout</a>
+    </header>
+    <div class="edit">
+      <form action="{% url 'edit_appt' appt.id %}" method="post">
+        {% csrf_token %}
+        {{ edit_appt_form }}
+        {% for field in edit_appt_form %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <p><a href="#id_{{ field.name }}">{{ error|escape }}</a></p>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+        <input class="submit" type="submit" value="Update">
+      </form>
+    </div>
+  </body>
+</html>

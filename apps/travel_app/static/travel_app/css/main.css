@@ -1,0 +1,83 @@
+/* RESET */
+*{
+  margin: 0px;
+  padding: 0px;
+}
+header a, #router{
+  margin-left: 85%;
+  vertical-align: top;
+  display: inline-block;
+  color: inherit;
+  color: blue;
+  text-decoration: underline;
+}
+#router2{
+  margin-left: 10px;
+  vertical-align: top;
+  display: inline-block;
+  color: inherit;
+  color: blue;
+  text-decoration: underline;
+}
+.regDiv, .loginDiv{
+  margin: 20px;
+  margin-top: 48px;
+  width: 325px;
+  display: inline-block;
+  border: 3px solid black;
+  padding: 20px;
+}
+.regDiv{
+  z-index: 999998;
+}
+.regDiv p{
+  margin: 10px;
+}
+.loginDiv{
+  z-index: 999998;
+  padding: 20px;
+  vertical-align: top;
+}
+.errorlist{
+display: none;
+}
+.regDiv label, .loginDiv label, .edit label{
+  display: inline-block;
+  width: 150px;
+  /*text-align: right;*/
+  margin: 10px;
+}
+.imprint{
+  z-index: 999999;
+  position: absolute;
+  display: inline-block;
+  background-color: white;
+  margin: 30px;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 95%;
+    margin: 20px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+td, th {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.action{
+  margin: 10px;
+}
+.edit{
+  margin: 20px;
+  margin-left: 40px;
+  width: 300px;
+}
