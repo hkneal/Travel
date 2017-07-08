@@ -29,11 +29,37 @@ class UserManager(models.Manager):
 
 class AppointmentManager(models.Manager):
     def update_info(self, postData):
+        user = postData['user']
+        newDate = postData['appt_date']
+        newTime = postData['appt_time']
+        appt_list = user.appts_scheduled.all()
+        for appt in appt_list:
+            if appt.appt_date == newDate and appt.appt_time == newTime:
+                return { 'error' : 'You already have an appointment for this Date and Time!'}
         appt = Appointment.objects.filter(id=postData['id']).update(
             task = postData['task'],
             status = postData['status'],
-            appt_date = postData['appt_date'],
-            appt_time = postData['appt_time']
+            appt_date = newDate,
+            appt_time = newTime
+        )
+        return {
+            'appt' : appt
+        }
+
+    def add_appt(self, postData):
+        user = postData['user']
+        newDate = postData['appt_date']
+        newTime = postData['appt_time']
+        appt_list = user.appts_scheduled.all()
+        for appt in appt_list:
+            if appt.appt_date == newDate and appt.appt_time == newTime:
+                return { 'error' : 'You already have an appointment for this Date and Time!'}
+        appt = Appointment.objects.create(
+            task = postData['task'],
+            status = postData['status'],
+            appt_date = newDate,
+            appt_time = newTime,
+            user = user
         )
         return {
             'appt' : appt

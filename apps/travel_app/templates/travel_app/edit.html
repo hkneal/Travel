@@ -24,6 +24,9 @@
       <a id='router2' href="{% url 'logout' %}">Logout</a>
     </header>
     <div class="edit">
+      {% if error %}
+        <h3 class="error">{{ error.error }}</h3>
+      {% endif %}
       <form action="{% url 'edit_appt' appt.id %}" method="post">
         {% csrf_token %}
         {{ edit_appt_form }}

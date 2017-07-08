@@ -64,6 +64,9 @@
     </table>
   </div>
   <div class="addAppt">
+    {% if error %}
+      <h3 class="error">{{ error.error }}</h3>
+    {% endif %}
     <form class="" action="{% url 'add_appt' %}" method="post">
       {% csrf_token %}
       {{ add_appt_form }}

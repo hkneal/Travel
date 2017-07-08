@@ -90,15 +90,29 @@ def add_appt(req):
     user = UserName.objects.get(id=req.session['id'])
     if req.method == 'POST':
         form = add_appt_form(req.POST)
-        if form.is_valid():
-            Appointment.objects.create(
-                task = form.cleaned_data['task'],
-                appt_date = form.cleaned_data['appt_date'],
-                appt_time = form.cleaned_data['appt_time'],
-                status = "Pending",
-                user = user
-            )
-            context = getDashboardContext(req)
+        if form.is_valid():  #check if date and time are free
+            postData = {
+                'task' : form.cleaned_data['task'],
+                'appt_date' : form.cleaned_data['appt_date'],
+                'appt_time' : form.cleaned_data['appt_time'],
+                'status' : "Pending",
+                'user' : user
+            }
+            appt = Appointment.objects.add_appt(postData)
+            if 'error' in appt:
+                print appt
+                scheduled_appts = Appointment.objects.filter(user=user.id, appt_date=datetime.date.today()).order_by('-appt_time')
+                other_appts = Appointment.objects.filter(user=user.id).exclude(appt_date=datetime.date.today())
+                context = {
+                    'appts': scheduled_appts,
+                    'other_appts' : other_appts,
+                    'today' : datetime.date.today(),
+                    'add_appt_form' : add_appt_form(),
+                    'error' : appt
+                }
+                return render(req, 'travel_app/dashboard.html', context)
+            else:
+                context = getDashboardContext(req)
             return render(req, 'travel_app/dashboard.html', context)
         else:
             scheduled_appts = Appointment.objects.filter(user=user.id, appt_date=datetime.date.today()).order_by('-appt_time')
@@ -129,14 +143,24 @@ def edit_appt(req, id):
         if form.is_valid():
             postData = {
                 'id' : appt.id,
+                'user' : user,
                 'task' : form.cleaned_data['task'],
                 'status' : form.cleaned_data['status'],
                 'appt_date' : form.cleaned_data['appt_date'],
                 'appt_time' : form.cleaned_data['appt_time']
-                }
-            Appointment.objects.update_info(postData)
-            context = getDashboardContext(req)
-            return render(req, 'travel_app/dashboard.html', context)
+                }  #check if date and time are free
+            newAppt = Appointment.objects.update_info(postData)
+            if 'error' in newAppt:
+                print newAppt
+                context = {
+                    'appt' : appt,
+                    'edit_appt_form' : form,
+                    'error' : newAppt
+                    }
+                return render(req, 'travel_app/edit.html', context)
+            else:
+                context = getDashboardContext(req)
+                return render(req, 'travel_app/dashboard.html', context)
             # return render(req, 'user_app/edit_user.html', context)
         else:
             context = {
